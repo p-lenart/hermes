@@ -9,6 +9,11 @@
 #define HERMES_NAPI_HERMES_NAPI_H
 
 #include "hermes/napi/node_api.h"
+#include "hermes/Public/HermesExport.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 //===========================================================================
 // Host integration interface
@@ -114,16 +119,16 @@ typedef hermes_napi_host hermes_napi_event_loop;
 /// The optional \p host provides host integration callbacks (async work,
 /// thread-safe functions, etc.); if nullptr, those APIs return
 /// napi_generic_failure.
-napi_env hermes_napi_create_env(
+HERMES_EXPORT napi_env hermes_napi_create_env(
     void *hermes_runtime,
     hermes_napi_host *host = nullptr);
 
 /// Destroy a NAPI environment previously created with hermes_napi_create_env.
-void hermes_napi_destroy_env(napi_env env);
+HERMES_EXPORT void hermes_napi_destroy_env(napi_env env);
 
 /// Get the last module registered via the deprecated napi_module_register().
 /// Returns nullptr if no module has been registered.
-const napi_module *hermes_napi_get_last_registered_module();
+HERMES_EXPORT const napi_module *hermes_napi_get_last_registered_module();
 
 /// Load a NAPI addon from a shared library at \p path.
 ///
@@ -141,7 +146,7 @@ const napi_module *hermes_napi_get_last_registered_module();
 ///
 /// Returns napi_ok on success, or an error status on failure (with a
 /// pending exception set on the env).
-napi_status
+HERMES_EXPORT napi_status
 hermes_napi_load_module(napi_env env, const char *path, napi_value *result);
 
 //===========================================================================
@@ -184,7 +189,7 @@ struct hermes_run_script_flags {
 ///
 /// Returns napi_ok on success, napi_pending_exception on JS or
 /// compile error.
-napi_status hermes_run_script(
+HERMES_EXPORT napi_status hermes_run_script(
     napi_env env,
     const uint8_t *data,
     size_t size,
@@ -225,7 +230,7 @@ struct hermes_bytecode_flags {
 ///
 /// Returns napi_ok on success, napi_pending_exception on JS error,
 /// or napi_generic_failure on bytecode validation failure.
-napi_status hermes_run_bytecode(
+HERMES_EXPORT napi_status hermes_run_bytecode(
     napi_env env,
     const uint8_t *data,
     size_t size,
@@ -234,5 +239,9 @@ napi_status hermes_run_bytecode(
     const char *source_url,
     const hermes_bytecode_flags *flags,
     napi_value *result);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
 #endif // HERMES_NAPI_HERMES_NAPI_H
